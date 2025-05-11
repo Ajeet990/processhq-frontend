@@ -2,15 +2,14 @@ import { useFormik } from 'formik';
 import { useState, useContext } from 'react';
 import { LoginValidationSchema } from '../../utils/validations/LoginValidation';
 import { useLoginMutation } from '../../apis/auth/AuthSlice';
-import { APP_NAME } from '../../utils/constants/Constants';
 import { toast } from 'react-toastify';
 import { Messages } from '../../messages/auth/Message';
 import { TOAST_MESSAGE_TYPE } from '../../utils/constants/Constants';
 import { useNavigate } from 'react-router-dom';
-// import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { LOGIN_PAGE_TEXT } from '../../utils/constants/Constants';
+const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 const LoginForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,6 +17,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { login, setToken } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  console.log('LoginForm', APP_NAME);
 
   // Mock login API call
   const handleLogin = async (values) => {
@@ -157,7 +157,7 @@ const LoginForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isSubmitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
             >
               {isSubmitting ? (
                 <>

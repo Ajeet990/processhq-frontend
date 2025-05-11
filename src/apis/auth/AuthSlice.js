@@ -1,6 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; // Fixed import
-// import { VITE_API_BASE_URL } from "../../utils/constants/Constants";
-// import { APP_VERSION } from "../../utils/constants/Constants";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 const API_BASE_URL = `${VITE_API_BASE_URL}/${APP_VERSION}`;
