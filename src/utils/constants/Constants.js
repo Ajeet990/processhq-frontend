@@ -11,3 +11,17 @@ export const TOAST_MESSAGE_TYPE = {
     INFO: 'info',
     WARNING: 'warning',
 }
+
+export const LOGIN_PAGE_TEXT = {
+    SIGN_IN: 'Sign In',
+    SIGNING_IN: 'Signing In...',
+    SUB_TITLE: 'Please login to your account',
+    FORGOT_PASSWORD: 'Forgot Password?',
+    SIGN_UP: 'Sign Up',
+    LOGIN: 'Login',
+    EMAIL: 'Email',
+    PASSWORD: 'Password',
+    REMEMBER_ME: 'Remember Me',
+    SHOW_PASSWORD: 'Show Password',
+    HIDE_PASSWORD: 'Hide Password',
+}

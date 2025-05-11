@@ -1,6 +1,4 @@
 import { useState } from 'react'
-// import './App.css'
-// import Login from './pages/Login'
 import Login from './pages/auth/Login'
 import PageNotFound from './pages/pageNotFound/PageNotFound'
 import { Routes, Route } from 'react-router-dom'
