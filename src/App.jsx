@@ -36,6 +36,7 @@ function App() {
           element={route.element}
         />
       ))}
+      
       <Route element={<MasterLayout />}>
         {privateRoutes.map(route => (
           <Route
