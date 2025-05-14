@@ -17,6 +17,7 @@ function App() {
   ]
 
   const authRoutes = [
+    { path: '/', element: <Login /> },
     { path: '/login', element: <Login /> },
     // { path: '/register', element: <Register /> },
     { path: '/logout', element: <Logout /> },
