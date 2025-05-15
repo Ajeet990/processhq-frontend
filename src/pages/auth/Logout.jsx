@@ -7,24 +7,20 @@ import { toast } from 'react-toastify';
 import { Messages } from '../../messages/auth/Message';
 
 const Logout = () => {
-    // toast.dismiss();
-    const navigate = useNavigate();
-    const { logout } = useContext(AuthContext);
-    // const [hasLoggedOut, setHasLoggedOut] = useState(false)
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        logout(); // Perform logout
-        navigate('/login'); // Redirect after logout
-        toast.success(Messages.LOGOUT_SUCCESS); // Show success message
-        // setHasLoggedOut(true)
+  useEffect(() => {
+    const performLogout = async () => {
+      await logout(); // Wait for logout to complete
+      toast.success(Messages.LOGOUT_SUCCESS);
+      navigate('/login', { replace: true });
+    };
+    
+    performLogout();
+  }, [logout, navigate]);
 
-    }, []); // Dependencies ensure this runs only once
-
-    return (
-        <div>
-            <p>Logging out...</p> {/* Optional: Show a message while logging out */}
-        </div>
-    );
+  return <div>Logging out...</div>;
 };
 
 export default Logout;

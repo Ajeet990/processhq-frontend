@@ -4,6 +4,7 @@ import PageNotFound from './pages/pageNotFound/PageNotFound'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './features/auth/PrivateRoute'
+import AuthRoute from './features/auth/AuthRoute'
 import MasterLayout from './layout/MasterLayout'
 import Logout from './pages/auth/Logout'
 
@@ -20,7 +21,7 @@ function App() {
     { path: '/', element: <Login /> },
     { path: '/login', element: <Login /> },
     // { path: '/register', element: <Register /> },
-    { path: '/logout', element: <Logout /> },
+    // { path: '/logout', element: <Logout /> },
   ]
 
   const privateRoutes = [
@@ -34,10 +35,16 @@ function App() {
         <Route
           key={route.path}
           path={route.path}
-          element={route.element}
+          element={
+            <AuthRoute>
+              {route.element}
+            </AuthRoute>
+          }
         />
       ))}
-      
+
+      <Route path='/logout' element={<Logout />}></Route>
+
       <Route element={<MasterLayout />}>
         {privateRoutes.map(route => (
           <Route

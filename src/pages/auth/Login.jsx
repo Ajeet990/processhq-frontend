@@ -32,7 +32,9 @@ const LoginForm = () => {
         toastType = TOAST_MESSAGE_TYPE.LOGIN_SUCCESS;
         toastMessage = response.message;
         setToken(response.data.token);
-        login(response.data.user);
+        // login(response.data.user);
+        login(response.data.user, response.data.token);
+        localStorage.setItem('user_token', response.data.token);
         navigate('/dashboard')
         return response.data;
       } else {
