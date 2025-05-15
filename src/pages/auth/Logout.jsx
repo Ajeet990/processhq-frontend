@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Messages } from '../../messages/auth/Message';
+import FullPageLoader from '../../components/loader/FullPageLoader';
 
 const Logout = () => {
   const { logout } = useContext(AuthContext);
@@ -18,9 +19,10 @@ const Logout = () => {
     };
     
     performLogout();
-  }, [logout, navigate]);
+  // }, [logout, navigate]);
+  }, []);
 
-  return <div>Logging out...</div>;
+  return <FullPageLoader />; // Show loader while logging out
 };
 
 export default Logout;

@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext()
 import axios from "axios";
 import { toast } from "react-toastify";
+import FullPageLoader from "../components/loader/FullPageLoader";
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
             setToken(null);
             setIsAuthenticated(false);
-            window.location.href = '/login';
+            // window.location.href = '/login';
         }
     };
 
@@ -93,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>; // Show loader while validating token
+        return <FullPageLoader /> // Show loader while validating token
     }
 
     return (
