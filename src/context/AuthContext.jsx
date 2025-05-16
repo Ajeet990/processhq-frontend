@@ -3,12 +3,16 @@ export const AuthContext = createContext()
 import axios from "axios";
 import { toast } from "react-toastify";
 import FullPageLoader from "../components/loader/FullPageLoader";
+import { useLogoutMutation, useCheckTokenValidityQuery, useLazyCheckTokenValidityQuery } from "../apis/auth/AuthSlice";
+
 
 export const AuthProvider = ({ children }) => {
+    const [makeLogout] = useLogoutMutation();
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(true); // Changed to true initially
+    const [loading, setLoading] = useState(true);
+    const [triggerCheckToken] = useLazyCheckTokenValidityQuery();
 
     useEffect(() => {
         const validateToken = async () => {
@@ -20,11 +24,9 @@ export const AuthProvider = ({ children }) => {
             }
 
             try {
-                const response = await axios.get('http://localhost:8000/api/v1/check-token-validity', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                if (response.data.success) {
+                const { data: response } = await triggerCheckToken();
+                console.log('Token validation response:', response);
+                if (response.success) {
                     setUser(response.data.user);
                     setToken(token); // Set token in state
                     setIsAuthenticated(true); // Critical: Set authenticated
@@ -59,7 +61,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        const isLoggedOut = await makeUserLogout();
+        const isLoggedOut = await makeLogout();
+        // const isLoggedOut = await makeUserLogout();
         if (isLoggedOut) {
             localStorage.removeItem('user_token');
             setUser(null);

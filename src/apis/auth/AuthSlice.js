@@ -7,9 +7,12 @@ export const AuthSlice = createApi({
   reducerPath: "authSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
-    prepareHeaders: (headers) => {
-      // You can add auth headers here later if needed
-      // headers.set('Authorization', `Bearer ${token}`);
+    prepareHeaders: (headers, { getState }) => {
+      const token = localStorage.getItem('user_token');
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
       return headers;
     },
   }),
@@ -27,8 +30,19 @@ export const AuthSlice = createApi({
         method: "POST",
       }),
     }),
+    checkTokenValidity: builder.query({
+      query: () => ({
+        url: "/check-token-validity",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in components
-export const { useLoginMutation, useLogoutMutation } = AuthSlice;
+export const { 
+  useLoginMutation,
+  useLogoutMutation,
+  useCheckTokenValidityQuery,
+  useLazyCheckTokenValidityQuery
+} = AuthSlice;
