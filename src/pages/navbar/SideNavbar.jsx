@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { IoSettings, IoHome } from "react-icons/io5";
 import { HiOutlineAdjustmentsVertical } from "react-icons/hi2";
 import { FaBowlFood, FaBlog, FaTimeline } from "react-icons/fa6";
