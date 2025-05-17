@@ -127,7 +127,7 @@ const SideNavbar = () => {
               <ul className="pl-10 mt-2">
                 {MANAGEMENTS?.map((management) => {
                   return (
-                    <li>
+                    <li key={management}>
                       <NavLink
                         to={`/${management.slug}`}
                         className={navLinkStyles}
