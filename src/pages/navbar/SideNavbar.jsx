@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { IoSettings, IoHome } from "react-icons/io5";
 import { HiOutlineAdjustmentsVertical } from "react-icons/hi2";
 import { FaBowlFood, FaBlog, FaTimeline } from "react-icons/fa6";
-import { MdFastfood, MdOutlineDocumentScanner } from "react-icons/md";
-import { FaTools, FaPowerOff } from "react-icons/fa";
-import { AiOutlineFileProtect } from "react-icons/ai";
-import { PiFarmDuotone } from "react-icons/pi";
-import { GrUserExpert } from "react-icons/gr";
+import { FaPowerOff } from "react-icons/fa";
 import { GiFarmer } from "react-icons/gi";
+import { GoOrganization } from "react-icons/go";
 
+import { MANAGEMENTS } from "../../utils/constants/Constants";
 
 const SideNavbar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeSection, setActiveSection] = useState(null);
-  const location = useLocation(); // Get the current location (path)
 
   // Toggle Sidebar
   const toggleSidebar = () => {
@@ -23,7 +20,9 @@ const SideNavbar = () => {
 
   // Handle Section Toggle
   const handleSectionToggle = (section) => {
-    setActiveSection((prevSection) => (prevSection === section ? null : section));
+    setActiveSection((prevSection) =>
+      prevSection === section ? null : section
+    );
   };
 
   const navLinkStyles = ({ isActive }) =>
@@ -40,8 +39,9 @@ const SideNavbar = () => {
     <div className="flex">
       {/* Sidebar */}
       <div
-        className={`${isOpen ? "w-64" : "w-20"
-          } h-screen bg-gray-800 text-white transition-all duration-300`}
+        className={`${
+          isOpen ? "w-64" : "w-20"
+        } h-screen bg-gray-800 text-white transition-all duration-300`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-4 py-3">
@@ -60,22 +60,36 @@ const SideNavbar = () => {
         <ul className="mt-4">
           {/* Static Links */}
           <li>
-            <NavLink to="/dashboard" className={navLinkStyles} onClick={handleNavLinkClick}>
-              <span className="text-2xl"><IoHome className="text-green-400" /></span>
+            <NavLink
+              to="/dashboard"
+              className={navLinkStyles}
+              onClick={handleNavLinkClick}
+            >
+              <span className="text-2xl">
+                <IoHome className="text-green-400" />
+              </span>
               <span
-                className={`ml-3 text-lg ${isOpen ? "block" : "hidden"
-                  } transition-all duration-300`}
+                className={`ml-3 text-lg ${
+                  isOpen ? "block" : "hidden"
+                } transition-all duration-300`}
               >
                 Dashboard
               </span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/" className={navLinkStyles} onClick={handleNavLinkClick}>
-              <span className="text-2xl"><GiFarmer className="text-green-400" /></span>
+            <NavLink
+              to="/"
+              className={navLinkStyles}
+              onClick={handleNavLinkClick}
+            >
+              <span className="text-2xl">
+                <GiFarmer className="text-green-400" />
+              </span>
               <span
-                className={`ml-3 text-lg ${isOpen ? "block" : "hidden"
-                  } transition-all duration-300`}
+                className={`ml-3 text-lg ${
+                  isOpen ? "block" : "hidden"
+                } transition-all duration-300`}
               >
                 Test example
               </span>
@@ -85,46 +99,59 @@ const SideNavbar = () => {
           {/* Collapsible Section with Subsections */}
           <li>
             <div
-              className={`${navLinkStyles({ isActive: activeSection === "management" })}`}
+              className={`${navLinkStyles({
+                isActive: activeSection === "management"
+              })}`}
               onClick={() => handleSectionToggle("management")}
             >
-              <span className="text-2xl"><HiOutlineAdjustmentsVertical className="text-green-400" /></span>
+              <span className="text-2xl">
+                <HiOutlineAdjustmentsVertical className="text-green-400" />
+              </span>
               <span
-                className={`ml-3 text-lg ${isOpen ? "block" : "hidden"
-                  } transition-all duration-300`}
+                className={`ml-3 text-lg ${
+                  isOpen ? "block" : "hidden"
+                } transition-all duration-300`}
               >
                 Management
               </span>
               <span
-                className={`ml-auto text-lg ${isOpen ? "block" : "hidden"
-                  } transition-all duration-300`}
+                className={`ml-auto text-lg ${
+                  isOpen ? "block" : "hidden"
+                } transition-all duration-300`}
               >
                 {activeSection === "management" ? "▲" : "▼"}
               </span>
             </div>
+            {/* Managements list. */}
             {isOpen && activeSection === "management" && (
               <ul className="pl-10 mt-2">
-                <li>
-                  <NavLink to="/admin/management/crop" className={navLinkStyles}>
-                    <span className="text-2xl"><FaBowlFood className="text-green-400" /></span>
-                    <span className="ml-3">Crop</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/admin/management/crop-category" className={navLinkStyles}>
-                    <span className="text-2xl"><MdFastfood className="text-green-400" /></span>
-                    <span className="ml-3">Crop Category</span>
-                  </NavLink>
-                </li>
+                {MANAGEMENTS?.map((management) => {
+                  return (
+                    <li>
+                      <NavLink
+                        to={`/${management.slug}`}
+                        className={navLinkStyles}
+                      >
+                        <span className="text-2xl">
+                          <management.icon className="text-green-400" />
+                        </span>
+                        <span className="ml-3">{management.name}</span>
+                      </NavLink>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </li>
           <li>
             <NavLink to="/logout" className={navLinkStyles}>
-              <span className="text-2xl"><FaPowerOff className="text-green-400" /></span>
+              <span className="text-2xl">
+                <FaPowerOff className="text-green-400" />
+              </span>
               <span
-                className={`ml-3 text-lg ${isOpen ? "block" : "hidden"
-                  } transition-all duration-300`}
+                className={`ml-3 text-lg ${
+                  isOpen ? "block" : "hidden"
+                } transition-all duration-300`}
               >
                 Log Out
               </span>
@@ -135,7 +162,7 @@ const SideNavbar = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-5">
-        <Outlet /> {/* This renders the routed components */}
+        <Outlet />
       </div>
     </div>
   );
