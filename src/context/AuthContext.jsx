@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext()
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
 import FullPageLoader from "../components/loader/FullPageLoader";
 import { useLogoutMutation, useCheckTokenValidityQuery, useLazyCheckTokenValidityQuery } from "../apis/auth/AuthSlice";
@@ -79,21 +79,6 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         token,
         setToken
-    };
-
-    const makeUserLogout = async () => {
-        try {
-            const response = await axios.post('http://localhost:8000/api/v1/logout', {}, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (response.data.success) {
-                return true;
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-            toast.error('Logout failed. Please try again.');
-        }
     };
 
     if (loading) {
