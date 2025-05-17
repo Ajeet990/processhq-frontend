@@ -67,9 +67,9 @@ const ModuleData = () => {
                     </tbody>
                 </table>
             </div>
-            {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <AddModule onSuccess={() => setShowModal(false)} />
-            </Modal> */}
+            </Modal>
         </div>
     )
 }
