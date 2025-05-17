@@ -6,8 +6,9 @@ import PrivateRoute from "./features/auth/PrivateRoute";
 import AuthRoute from "./features/auth/AuthRoute";
 import MasterLayout from "./layout/MasterLayout";
 import Logout from "./pages/auth/Logout";
-import Organizations from "./pages/managements/Organizations";
-import OrganizationForm from "./pages/managements/components/OrganizationForm";
+import Organizations from "./pages/organizations/Organizations";
+import OrganizationForm from "./pages/organizations/components/OrganizationForm";
+import Modules from "./pages/modules/Modules";
 
 function App() {
   const authRoutes = [
@@ -19,7 +20,8 @@ function App() {
   const privateRoutes = [
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/organizations", element: <Organizations /> },
-    { path: "/organizations/add-new", element: <OrganizationForm /> }
+    { path: "/organizations/add-new", element: <OrganizationForm /> },
+	{ path:"/modules", element:<Modules />}
   ];
 
   return (
