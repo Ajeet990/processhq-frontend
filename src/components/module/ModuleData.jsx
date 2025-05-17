@@ -69,9 +69,7 @@ const ModuleData = () => {
             </div>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <AddModule
-                    onSuccess={() => {
-                        setShowModal(false);
-                    }}
+                    onSuccess={() => setShowModal(false)}
                     onCancel={() => setShowModal(false)}
                 />
             </Modal>
