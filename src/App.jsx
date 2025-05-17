@@ -7,6 +7,7 @@ import PrivateRoute from './features/auth/PrivateRoute'
 import AuthRoute from './features/auth/AuthRoute'
 import MasterLayout from './layout/MasterLayout'
 import Logout from './pages/auth/Logout'
+import Modules from './pages/modules/Modules'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   const privateRoutes = [
     // All admin related routes 
     { path: '/dashboard', element: <Dashboard /> },
+    { path: '/modules', element: <Modules /> },
   ]
 
   return (

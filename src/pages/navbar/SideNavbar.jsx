@@ -3,9 +3,10 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { IoSettings, IoHome } from "react-icons/io5";
 import { HiOutlineAdjustmentsVertical } from "react-icons/hi2";
 import { FaBowlFood, FaBlog, FaTimeline } from "react-icons/fa6";
-import { MdFastfood, MdOutlineDocumentScanner } from "react-icons/md";
+import { MdFastfood, MdOutlineDocumentScanner, MdViewModule } from "react-icons/md";
 import { FaTools, FaPowerOff } from "react-icons/fa";
 import { AiOutlineFileProtect } from "react-icons/ai";
+// import { MdViewModule } from "react-icons/md";
 import { PiFarmDuotone } from "react-icons/pi";
 import { GrUserExpert } from "react-icons/gr";
 import { GiFarmer } from "react-icons/gi";
@@ -105,9 +106,9 @@ const SideNavbar = () => {
             {isOpen && activeSection === "management" && (
               <ul className="pl-10 mt-2">
                 <li>
-                  <NavLink to="/admin/management/crop" className={navLinkStyles}>
-                    <span className="text-2xl"><FaBowlFood className="text-green-400" /></span>
-                    <span className="ml-3">Crop</span>
+                  <NavLink to="/modules" className={navLinkStyles}>
+                    <span className="text-2xl"><MdViewModule className="text-green-400" /></span>
+                    <span className="ml-3">Modules</span>
                   </NavLink>
                 </li>
                 <li>
