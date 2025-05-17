@@ -34,5 +34,10 @@ export const MANAGEMENTS = [
     slug: "organizations",
     name: "Organizations",
 	icon:GoOrganization
-  }
+  },
+  {
+    slug: "modules",
+    name: "Modules",
+	icon:GoOrganization
+  },
 ];
