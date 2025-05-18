@@ -19,9 +19,7 @@ const Modules = () => {
             {/* Module Table */}
             <ModuleData />
             {/* Pagination */}
-            <div className='mt-6'>
-                <Pagination />
-            </div>
+            
         </div>
     );
 };

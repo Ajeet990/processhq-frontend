@@ -25,9 +25,13 @@ export const SuperManagement = createApi({
       }),
     }),
     getModules: builder.query({
-      query: () => ({
+      query: ({page = 1, search = ''}) => ({
         url: "/module/list",
         method: "GET",
+        params: {
+          page: page,
+          search: search,
+        },
       }),
     }),
   }),
@@ -36,5 +40,6 @@ export const SuperManagement = createApi({
 // Export hooks for usage in components
 export const { 
     useCreateModuleMutation,
-    useGetModulesQuery
+    useGetModulesQuery,
+    useLazyGetModulesQuery
 } = SuperManagement;
