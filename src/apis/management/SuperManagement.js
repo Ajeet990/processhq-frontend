@@ -25,12 +25,13 @@ export const SuperManagement = createApi({
       }),
     }),
     getModules: builder.query({
-      query: ({page = 1, search = ''}) => ({
+      query: ({page = 1, search = '', status = ''}) => ({
         url: "/module/list",
         method: "GET",
         params: {
           page: page,
           search: search,
+          status: status,
         },
       }),
     }),
