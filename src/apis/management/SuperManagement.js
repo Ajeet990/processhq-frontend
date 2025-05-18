@@ -19,7 +19,7 @@ export const SuperManagement = createApi({
   endpoints: (builder) => ({
     createModule: builder.mutation({
       query: (credentials) => ({
-        url: "/create-module",
+        url: "/module/create",
         method: "POST",
         body: credentials,
       }),
