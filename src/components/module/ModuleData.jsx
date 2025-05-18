@@ -2,22 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../modal/Modal'
 import AddModule from './AddModule'
-import { useGetModulesQuery, useLazyGetModulesQuery } from '../../apis/management/SuperManagement'
+import { useGetModulesQuery, useLazyGetModulesQuery, useDeleteModuleMutation } from '../../apis/management/SuperManagement'
 import FullPageLoader from '../loader/FullPageLoader'
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import Pagination from '../../components/pagination/Pagination';
-import NoRecordFound from '../no-record-found/NoRecordFound'
-
+import NoRecordFound from '../no-record-found/NoRecordFound';
+import { FaToggleOn, FaToggleOff } from "react-icons/fa";
+import Swal from 'sweetalert2';
+// import { useDeleteConfirmation } from '../deleteConfirmation/DeleteConfirmation';
+// import DeleteConfirmation from '../deleteConfirmation/DeleteConfirmation';
+import { useDeleteConfirmation } from '../deleteConfirmation/DeleteConfirmation';
+import { STATUS, PAGE } from '../../utils/constants/Constants'
 
 
 const ModuleData = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState(1);
-    const [serialNumber, setSerialNumber] = useState(0);
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const [deleteModule] = useDeleteModuleMutation();
     const [getModules, { data: moduleList, isLoading, isError }] = useLazyGetModulesQuery();
 
     const fetchModules = (page = currentPage, search = searchTerm) => {
@@ -40,6 +45,17 @@ const ModuleData = () => {
         fetchModules(currentPage);
     }, []);
 
+
+    const handleToggleStatus = (id, status) => {
+        console.log('Toggling status for module ID:', id, status);
+    }
+    const handleEdit = (id) => {
+        console.log('Editing module ID:', id);
+    }
+    const handleDelete = useDeleteConfirmation({
+        mutationHook: useDeleteModuleMutation,
+        entityName: "module"
+    });
     if (isLoading) {
         return <FullPageLoader />
     }
@@ -70,7 +86,7 @@ const ModuleData = () => {
                             <input
                                 type="text"
                                 id="module-search"
-                                placeholder="Search by name or description..."
+                                placeholder="Search by name, slug and description..."
                                 className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-12 py-2 sm:text-sm border-gray-300 rounded-md"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -86,7 +102,6 @@ const ModuleData = () => {
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
                         >
-                            <option value="">All</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
@@ -99,8 +114,8 @@ const ModuleData = () => {
                             className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             onClick={() => {
                                 setSearchTerm('');
-                                setStatusFilter('');
-                                setCurrentPage(1);
+                                setStatusFilter(STATUS.ACTIVE);
+                                setCurrentPage(PAGE.FIRST);
                             }}
                         >
                             Reset Filters
@@ -116,10 +131,10 @@ const ModuleData = () => {
                             <tr>
                                 <th>#</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Module Name
+                                    Module
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Slug Name
+                                    Slug
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Description
@@ -157,9 +172,29 @@ const ModuleData = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <div className="flex space-x-1">
-                                                    <button className="text-blue-600 hover:text-blue-800 text-2xl"><FaEdit /></button>
+                                                    <button
+                                                        className="text-blue-600 hover:text-blue-800 text-2xl hover:cursor-pointer"
+                                                        title='Edit'
+                                                        onClick={() => handleEdit(module.id)}
+                                                    >
+                                                        <FaEdit />
+                                                    </button>
                                                     <span className="text-gray-300">|</span>
-                                                    <button className="text-red-500 hover:text-red-800 text-2xl"><MdDeleteForever /></button>
+                                                    <button
+                                                        className={`text-2xl ${module.status === '1' ? 'text-green-600 hover:text-green-800' : 'text-red-400 hover:text-red-600'} hover:cursor-pointer`}
+                                                        onClick={() => handleToggleStatus(module.id, module.status)}
+                                                        title={module.status === '1' ? 'Deactivate' : 'Activate'}
+                                                    >
+                                                        {module.status === '1' ? <FaToggleOn /> : <FaToggleOff />}
+                                                    </button>
+                                                    <span className="text-gray-300">|</span>
+                                                    <button
+                                                        className="text-red-500 hover:text-red-800 text-2xl hover:cursor-pointer"
+                                                        title="Delete"
+                                                        onClick={() => handleDelete(module.id)}
+                                                    >
+                                                        <MdDeleteForever />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>

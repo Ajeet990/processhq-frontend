@@ -42,3 +42,11 @@ export const MANAGEMENTS = [
     icon: MdViewModule
   }
 ];
+
+export const STATUS = {
+  ACTIVE: 1,
+  INACTIVE: 0
+}
+export const PAGE = {
+  FIRST: 1,
+}

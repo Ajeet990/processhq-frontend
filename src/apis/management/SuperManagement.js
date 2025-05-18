@@ -16,6 +16,7 @@ export const SuperManagement = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Module'],
   endpoints: (builder) => ({
     createModule: builder.mutation({
       query: (credentials) => ({
@@ -23,6 +24,7 @@ export const SuperManagement = createApi({
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ['Module'],
     }),
     getModules: builder.query({
       query: ({page = 1, search = '', status = ''}) => ({
@@ -34,6 +36,14 @@ export const SuperManagement = createApi({
           status: status,
         },
       }),
+      providesTags: ['Module'],
+    }),
+    deleteModule: builder.mutation({
+      query: (id) => ({
+        url: `/module/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['Module'],
     }),
   }),
 });
@@ -42,5 +52,6 @@ export const SuperManagement = createApi({
 export const { 
     useCreateModuleMutation,
     useGetModulesQuery,
-    useLazyGetModulesQuery
+    useLazyGetModulesQuery,
+    useDeleteModuleMutation,
 } = SuperManagement;
