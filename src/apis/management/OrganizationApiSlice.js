@@ -26,8 +26,8 @@ export const OrganizationApiSlice = createApi({
       }),
       invalidatesTags: ['Organization'],
     }),
-    getOrganizations: builder.query({
-      query: () => "/organizations",
+    getOrganization: builder.query({
+      query: () => "/organization/get",
       providesTags: ['Organization'],
     }),
   }),
@@ -35,5 +35,5 @@ export const OrganizationApiSlice = createApi({
 
 export const {
   useCreateOrganizationMutation,
-  useGetOrganizationsQuery,
+  useGetOrganizationQuery,
 } = OrganizationApiSlice;

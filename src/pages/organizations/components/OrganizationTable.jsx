@@ -1,44 +1,51 @@
 import React from "react";
+import { useGetOrganizationQuery } from "../../../apis/management/OrganizationApiSlice";
 
 const OrganizationTable = () => {
-  // Static data for organizations
-  const organizations = [
-    {
-      id: 1,
-      name: "Tech Solutions Inc.",
-      email: "contact@techsolutions.com",
-      status: "active",
-      created_at: "2023-05-15"
-    },
-    {
-      id: 2,
-      name: "Global Enterprises",
-      email: "info@globalent.com",
-      status: "active",
-      created_at: "2023-06-20"
-    },
-    {
-      id: 3,
-      name: "Innovate Labs",
-      email: "hello@innovatelabs.io",
-      status: "inactive",
-      created_at: "2023-07-10"
-    },
-    {
-      id: 4,
-      name: "Digital Horizons",
-      email: "support@digitalhorizons.net",
-      status: "active",
-      created_at: "2023-08-05"
-    },
-    {
-      id: 5,
-      name: "Future Systems",
-      email: "admin@futuresystems.org",
-      status: "inactive",
-      created_at: "2023-09-12"
-    }
-  ];
+  const {
+    data: response,
+    isLoading,
+    isError,
+    error
+  } = useGetOrganizationQuery();
+
+  const organizations = response?.data || [];
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-red-50 border-l-4 border-red-500 p-4">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <svg
+              className="h-5 w-5 text-red-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <p className="text-sm text-red-700">
+              Error loading organizations:{" "}
+              {error?.data?.message || error.message}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto shadow-md rounded-lg">
@@ -49,7 +56,19 @@ const OrganizationTable = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
+              ID
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
               Organization Name
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Username
             </th>
             <th
               scope="col"
@@ -67,58 +86,68 @@ const OrganizationTable = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Created At
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
               Actions
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {organizations.map((org) => (
-            <tr
-              key={org.id}
-              className="hover:bg-gray-50 transition-colors duration-150"
-            >
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">
-                  {org.name}
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-500">{org.email}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                  ${
-                    org.status === "active"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
-                >
-                  {org.status}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {org.created_at}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <div className="flex space-x-3">
-                  <button className="text-blue-600 hover:text-blue-800 hover:underline">
-                    Edit
-                  </button>
-                  <span className="text-gray-300">|</span>
-                  <button className="text-red-600 hover:text-red-800 hover:underline">
-                    Delete
-                  </button>
-                </div>
+          {organizations.length > 0 ? (
+            organizations.map((org) => (
+              <tr
+                key={org.id}
+                className="hover:bg-gray-50 transition-colors duration-150"
+              >
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {org.id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">
+                    {org.name}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">{org.username}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">{org.email}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                    ${
+                      org.status === "1" || org.status === 1
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {org.status === "1" || org.status === 1
+                      ? "Active"
+                      : "Inactive"}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <div className="flex space-x-3">
+                    <button className="text-blue-600 hover:text-blue-800 hover:underline">
+                      Edit
+                    </button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-red-600 hover:text-red-800 hover:underline">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="6"
+                className="px-6 py-4 text-center text-sm text-gray-500"
+              >
+                No organizations found
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
