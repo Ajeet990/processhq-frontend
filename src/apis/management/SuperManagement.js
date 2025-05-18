@@ -24,10 +24,17 @@ export const SuperManagement = createApi({
         body: credentials,
       }),
     }),
+    getModules: builder.query({
+      query: () => ({
+        url: "/module/list",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in components
 export const { 
-    useCreateModuleMutation
+    useCreateModuleMutation,
+    useGetModulesQuery
 } = SuperManagement;
