@@ -4,11 +4,11 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 const API_BASE_URL = `${VITE_API_BASE_URL}/${APP_VERSION}`;
 
-export const organizationApiSlice = createApi({
+export const OrganizationApiSlice = createApi({
   reducerPath: "organizationApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers) => {
       const token = localStorage.getItem('user_token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -20,7 +20,7 @@ export const organizationApiSlice = createApi({
   endpoints: (builder) => ({
     createOrganization: builder.mutation({
       query: (organizationData) => ({
-        url: "/organizations",
+        url: "/organization/create",
         method: "POST",
         body: organizationData,
       }),
@@ -36,4 +36,4 @@ export const organizationApiSlice = createApi({
 export const {
   useCreateOrganizationMutation,
   useGetOrganizationsQuery,
-} = organizationApiSlice;
+} = OrganizationApiSlice;

@@ -13,12 +13,9 @@ const ModuleData = () => {
         <h1 className="text-2xl font-semibold text-gray-800">Modules</h1>
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 rounded-lg transition-colors duration-200"
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
         >
-          <span className="flex flex-row gap-2">
-            <IoAdd size='24' className="text-green-400 border-1 border-green-400" />
-            <span>Add New</span>
-          </span>
+          Add Module
         </button>
       </div>
       <div className="overflow-x-auto">
