@@ -11,6 +11,7 @@ import Pagination from '../../components/pagination/Pagination';
 import NoRecordFound from '../no-record-found/NoRecordFound'
 
 
+
 const ModuleData = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);

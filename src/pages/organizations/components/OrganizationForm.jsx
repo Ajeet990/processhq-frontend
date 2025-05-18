@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 
-import { useCreateOrganizationMutation } from "../../../apis/organizations/organizationApiSlice";
+import { useCreateOrganizationMutation } from "../../../apis/management/organizationApiSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Organization name is required"),

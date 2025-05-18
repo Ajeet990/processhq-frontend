@@ -34,11 +34,11 @@ export const MANAGEMENTS = [
   {
     slug: "organizations",
     name: "Organizations",
-	  icon: GoOrganization
+    icon: GoOrganization
   },
   {
     slug: "modules",
     name: "Modules",
-	  icon: MdViewModule
-  },
+    icon: MdViewModule
+  }
 ];
