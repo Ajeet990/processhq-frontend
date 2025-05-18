@@ -29,7 +29,7 @@ const LoginForm = () => {
     try {
       const response = await makeLogin(values).unwrap();
       if (response.success) {
-        toastType = TOAST_MESSAGE_TYPE.LOGIN_SUCCESS;
+        toastType = TOAST_MESSAGE_TYPE.SUCCESS;
         toastMessage = response.message;
         setToken(response.data.token);
         // login(response.data.user);
