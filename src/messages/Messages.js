@@ -13,5 +13,7 @@ export const OrganizationsMessage = {
 };
 
 export const OrgMessage = {
-  ORG_CREATE_FAILED: "Failed to create organization."
+  ORG_CREATE_FAILED: "Failed to create organization.",
+  ORG_DELETE_FAILED: "Failed to delete organization.",
+  ORG_DELETE_SUCCESS: "Organization deleted successfully."
 };

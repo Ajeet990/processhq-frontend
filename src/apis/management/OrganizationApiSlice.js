@@ -9,31 +9,39 @@ export const OrganizationApiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('user_token');
+      const token = localStorage.getItem("user_token");
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
-    },
+    }
   }),
-  tagTypes: ['Organization'],
+  tagTypes: ["Organization"],
   endpoints: (builder) => ({
     createOrganization: builder.mutation({
       query: (organizationData) => ({
         url: "/organization/create",
         method: "POST",
-        body: organizationData,
+        body: organizationData
       }),
-      invalidatesTags: ['Organization'],
+      invalidatesTags: ["Organization"]
     }),
     getOrganization: builder.query({
       query: () => "/organization/get",
-      providesTags: ['Organization'],
+      providesTags: ["Organization"]
     }),
-  }),
+    deleteOrganization: builder.mutation({
+      query: (id) => ({
+        url: `/organization/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Organization"]
+    })
+  })
 });
 
 export const {
   useCreateOrganizationMutation,
   useGetOrganizationQuery,
+  useDeleteOrganizationMutation
 } = OrganizationApiSlice;

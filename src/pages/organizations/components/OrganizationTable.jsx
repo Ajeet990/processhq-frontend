@@ -1,13 +1,21 @@
-import React from "react";
-import { useGetOrganizationQuery } from "../../../apis/management/OrganizationApiSlice";
+import {
+  useDeleteOrganizationMutation,
+  useGetOrganizationQuery
+} from "../../../apis/management/OrganizationApiSlice";
+import { toast } from "react-toastify";
+import { OrgMessage } from "../../../messages/Messages";
 
 const OrganizationTable = () => {
   const {
     data: response,
     isLoading,
     isError,
-    error
+    error,
+    refetch
   } = useGetOrganizationQuery();
+
+  const [deleteOrganization, { isLoading: isDeleting }] =
+    useDeleteOrganizationMutation();
 
   const organizations = response?.data || [];
 
@@ -18,6 +26,20 @@ const OrganizationTable = () => {
       </div>
     );
   }
+
+  const handleDeleteOrganization = async (id) => {
+    if (window.confirm("Are you sure you want to delete this organization?")) {
+    try {
+      await deleteOrganization(id).unwrap();
+      toast.success(OrgMessage.ORG_DELETE_SUCCESS);
+      refetch();
+    } catch (error) {
+      toast.error(
+        error.data?.message || error.message || OrgMessage.ORG_DELETE_FAILED
+      );
+    }
+    }
+  };
 
   if (isError) {
     return (
@@ -131,8 +153,12 @@ const OrganizationTable = () => {
                       Edit
                     </button>
                     <span className="text-gray-300">|</span>
-                    <button className="text-red-600 hover:text-red-800 hover:underline">
-                      Delete
+                    <button
+                      className="text-red-600 hover:text-red-800 hover:underline cursor-pointer"
+                      onClick={() => handleDeleteOrganization(org.id)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? "Deleting..." : "Delete"}{" "}
                     </button>
                   </div>
                 </td>
