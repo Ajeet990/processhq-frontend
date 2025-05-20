@@ -1,9 +1,13 @@
 import {
   useDeleteOrganizationMutation,
+  useGetOrganizationByIdMutation,
   useGetOrganizationQuery
 } from "../../../apis/management/OrganizationApiSlice";
 import { toast } from "react-toastify";
 import { OrgMessage } from "../../../messages/Messages";
+import { useState } from "react";
+import OrganizationForm from "./OrganizationForm";
+import Modal from "../../../components/modal/Modal";
 
 const OrganizationTable = () => {
   const {
@@ -16,8 +20,11 @@ const OrganizationTable = () => {
 
   const [deleteOrganization, { isLoading: isDeleting }] =
     useDeleteOrganizationMutation();
+  const [getOrganizationById] = useGetOrganizationByIdMutation();
 
   const organizations = response?.data || [];
+  const [showModal, setShowModal] = useState(false);
+  const [organization, setOrganization] = useState(null);
 
   if (isLoading) {
     return (
@@ -29,15 +36,25 @@ const OrganizationTable = () => {
 
   const handleDeleteOrganization = async (id) => {
     if (window.confirm("Are you sure you want to delete this organization?")) {
-    try {
-      await deleteOrganization(id).unwrap();
-      toast.success(OrgMessage.ORG_DELETE_SUCCESS);
-      refetch();
-    } catch (error) {
-      toast.error(
-        error.data?.message || error.message || OrgMessage.ORG_DELETE_FAILED
-      );
+      try {
+        await deleteOrganization(id).unwrap();
+        toast.success(OrgMessage.ORG_DELETE_SUCCESS);
+        refetch();
+      } catch (error) {
+        toast.error(
+          error.data?.message || error.message || OrgMessage.ORG_DELETE_FAILED
+        );
+      }
     }
+  };
+
+  const handleEditOrganization = async (id) => {
+    try {
+      const response = await getOrganizationById(id).unwrap();
+	  setOrganization(response.data);
+      setShowModal(true);
+    } catch (error) {
+      toast.error(error.data?.message || error.message);
     }
   };
 
@@ -149,7 +166,11 @@ const OrganizationTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex space-x-3">
-                    <button className="text-blue-600 hover:text-blue-800 hover:underline">
+                    <button
+                      className="text-blue-600 hover:text-blue-800 hover:underline"
+                      onClick={() => handleEditOrganization(org.id)}
+                      //   disabled={isEditing}
+                    >
                       Edit
                     </button>
                     <span className="text-gray-300">|</span>
@@ -176,6 +197,20 @@ const OrganizationTable = () => {
           )}
         </tbody>
       </table>
+
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Edit Organization"
+      >
+        <OrganizationForm
+          onSuccess={() => {
+            setShowModal(false);
+          }}
+          onCancel={() => setShowModal(false)}
+          organization={organization}
+        />
+      </Modal>
     </div>
   );
 };

@@ -1,13 +1,12 @@
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { useCreateOrganizationMutation } from "../../../apis/management/OrganizationApiSlice";
 import * as Yup from "yup";
 import { ToastContainer } from "react-toastify";
 import OrganizationValidation from "./../../../utils/validations/OrganizationValidation";
 import { OrgMessage } from "../../../messages/Messages";
 
-const OrganizationForm = ({ onSuccess }) => {
+const OrganizationForm = ({ onSuccess, organization }) => {
   const [createOrganization, { isLoading }] = useCreateOrganizationMutation();
 
   const handleOrganizationSubmit = async (
@@ -31,17 +30,19 @@ const OrganizationForm = ({ onSuccess }) => {
   };
 
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      username: "",
-      email: "",
-      phone: "",
-      password: "",
-      address: "",
-      state: "",
-      url: "",
-      status: "1"
-    },
+    initialValues: organization
+      ? organization
+      : {
+          name: "",
+          username: "",
+          email: "",
+          phone: "",
+          password: "",
+          address: "",
+          state: "",
+          url: "",
+          status: "1"
+        },
     validationSchema: OrganizationValidation,
     onSubmit: handleOrganizationSubmit
   });

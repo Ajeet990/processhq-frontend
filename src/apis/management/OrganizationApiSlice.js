@@ -30,6 +30,10 @@ export const OrganizationApiSlice = createApi({
       query: () => "/organization/get",
       providesTags: ["Organization"]
     }),
+	 getOrganizationById: builder.mutation({
+      query: (id) => `/organization/get/${id}`,
+      providesTags: ["Organization"]
+    }),
     deleteOrganization: builder.mutation({
       query: (id) => ({
         url: `/organization/delete/${id}`,
@@ -43,5 +47,6 @@ export const OrganizationApiSlice = createApi({
 export const {
   useCreateOrganizationMutation,
   useGetOrganizationQuery,
+  useGetOrganizationByIdMutation,
   useDeleteOrganizationMutation
 } = OrganizationApiSlice;
