@@ -16,6 +16,7 @@ export const SuperManagement = createApi({
       return headers;
     },
   }),
+  tagTypes:['module'],
   endpoints: (builder) => ({
     createModule: builder.mutation({
       query: (credentials) => ({
@@ -23,12 +24,14 @@ export const SuperManagement = createApi({
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags:['module']
     }),
     getModules: builder.query({
       query: () => ({
         url: "/module/list",
         method: "GET",
       }),
+      providesTags:['module']
     }),
   }),
 });
