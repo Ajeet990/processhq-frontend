@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../modal/Modal'
 import AddModule from './AddModule'
-import { useGetModulesQuery, useLazyGetModulesQuery, useDeleteModuleMutation } from '../../apis/management/SuperManagement'
+import {
+    useGetModulesQuery,
+    useLazyGetModulesQuery,
+    useDeleteModuleMutation,
+    useToggleModuleStatusMutation
+} from '../../apis/management/SuperManagement'
 import FullPageLoader from '../loader/FullPageLoader'
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
@@ -15,6 +20,8 @@ import Swal from 'sweetalert2';
 // import DeleteConfirmation from '../deleteConfirmation/DeleteConfirmation';
 import { useDeleteConfirmation } from '../deleteConfirmation/DeleteConfirmation';
 import { STATUS, PAGE } from '../../utils/constants/Constants'
+import { TOAST_MESSAGE_TYPE } from '../../utils/constants/Constants'
+import { toast } from 'react-toastify';
 
 
 const ModuleData = () => {
@@ -24,6 +31,7 @@ const ModuleData = () => {
     const [showModal, setShowModal] = useState(false);
     const [deleteModule] = useDeleteModuleMutation();
     const [getModules, { data: moduleList, isLoading, isError }] = useLazyGetModulesQuery();
+    const [toggleModuleStatus] = useToggleModuleStatusMutation();
 
     const fetchModules = (page = currentPage, search = searchTerm) => {
         setCurrentPage(page); // Update current page
@@ -46,8 +54,18 @@ const ModuleData = () => {
     }, []);
 
 
-    const handleToggleStatus = (id, status) => {
-        console.log('Toggling status for module ID:', id, status);
+    const handleToggleStatus = async (id, status) => {
+        let toastMessage = '';
+        let toastType = TOAST_MESSAGE_TYPE.ERROR;
+        // console.log('Toggling status for module ID:', id, status);
+        let toggleResult = await toggleModuleStatus({ id }).unwrap();
+        // console.log('Toggle result:', toggleResult);
+        toastMessage = toggleResult.message;
+        if (toggleResult.success) {
+            toastType = TOAST_MESSAGE_TYPE.SUCCESS;
+        }
+        toast[toastType](toastMessage);
+
     }
     const handleEdit = (id) => {
         console.log('Editing module ID:', id);
