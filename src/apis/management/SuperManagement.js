@@ -45,6 +45,14 @@ export const SuperManagement = createApi({
       }),
       invalidatesTags: ['Module'],
     }),
+    toggleModuleStatus: builder.mutation({
+      query: ({ id }) => ({
+        url: `/module/toggle-status/${id}`,
+        method: "PUT",
+        // body: { status },
+      }),
+      invalidatesTags: ['Module'],
+    }),
   }),
 });
 
@@ -54,4 +62,5 @@ export const {
     useGetModulesQuery,
     useLazyGetModulesQuery,
     useDeleteModuleMutation,
+    useToggleModuleStatusMutation
 } = SuperManagement;
