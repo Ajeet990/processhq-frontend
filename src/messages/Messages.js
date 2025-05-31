@@ -1,5 +1,6 @@
 export const ModuleMessage = {
-  MODULE_CREATE_FAILED: "Failed to create module. Please try again."
+  MODULE_CREATE_FAILED: "Failed to create module. Please try again.",
+  MODULE_UPDATE_FAILED: "Failed to update module. Please try again."
 };
 
 export const OrganizationsMessage = {

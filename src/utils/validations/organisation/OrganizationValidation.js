@@ -34,10 +34,9 @@ const OrganizationValidation = Yup.object().shape({
     .required("URL is required")
     .url("Invalid URL format")
     .max(100, "URL must be less than 100 characters"),
-  state: Yup.string(),
-  status: Yup.number()
+  status: Yup.string()
     .required("Status is required")
-    .oneOf([0, 1], "Status must be either 0 or 1")
+    .oneOf(['0', '1'], "Status must be either 0 or 1")
 });
 
 export default OrganizationValidation;

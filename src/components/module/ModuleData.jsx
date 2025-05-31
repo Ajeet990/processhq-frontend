@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../modal/Modal'
 import AddModule from './AddModule'
+import EditModule from './EditModule'
 import {
     useGetModulesQuery,
     useLazyGetModulesQuery,
     useDeleteModuleMutation,
-    useToggleModuleStatusMutation
+    useToggleModuleStatusMutation,
+    useLazyGetModuleByIdQuery
 } from '../../apis/management/SuperManagement'
 import FullPageLoader from '../loader/FullPageLoader'
 import { FaEdit } from "react-icons/fa";
@@ -29,9 +31,11 @@ const ModuleData = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [editingModule, setEditingModule] = useState(null);
     const [deleteModule] = useDeleteModuleMutation();
     const [getModules, { data: moduleList, isLoading, isError }] = useLazyGetModulesQuery();
     const [toggleModuleStatus] = useToggleModuleStatusMutation();
+    const [getModuleById, { data: moduleData }] = useLazyGetModuleByIdQuery();
 
     const fetchModules = (page = currentPage, search = searchTerm) => {
         setCurrentPage(page); // Update current page
@@ -55,11 +59,10 @@ const ModuleData = () => {
 
 
     const handleToggleStatus = async (id, status) => {
+        toast.dismiss();
         let toastMessage = '';
         let toastType = TOAST_MESSAGE_TYPE.ERROR;
-        // console.log('Toggling status for module ID:', id, status);
         let toggleResult = await toggleModuleStatus({ id }).unwrap();
-        // console.log('Toggle result:', toggleResult);
         toastMessage = toggleResult.message;
         if (toggleResult.success) {
             toastType = TOAST_MESSAGE_TYPE.SUCCESS;
@@ -67,8 +70,17 @@ const ModuleData = () => {
         toast[toastType](toastMessage);
 
     }
-    const handleEdit = (id) => {
-        console.log('Editing module ID:', id);
+    const handleEdit = async (id) => {
+        // console.log('Editing module ID:', id);
+        let moduleDetail = await getModuleById(id).unwrap();
+        // console.log('Module Detail:', moduleDetail);
+        if (moduleDetail.success) {
+            // console.log('Module data:', moduleDetail.data.module);
+            setEditingModule(moduleDetail.data.module);
+            setShowModal(true);
+        } else {
+            toast.error(moduleDetail.message || 'Failed to fetch module details');
+        }
     }
     const handleDelete = useDeleteConfirmation({
         mutationHook: useDeleteModuleMutation,
@@ -225,12 +237,33 @@ const ModuleData = () => {
             </div>
 
             {/* Add Module Modal */}
-            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <AddModule
                     onSuccess={() => setShowModal(false)}
                     onCancel={() => setShowModal(false)}
                 />
+            </Modal> */}
+            <Modal isOpen={showModal} onClose={() => {
+                setShowModal(false);
+                setEditingModule(null); // Reset editing state when modal closes
+            }}>
+                <AddModule
+                    initialData={editingModule} // Pass the data to edit
+                    isEditing={!!editingModule} // Boolean flag to indicate edit mode
+                    onSuccess={() => {
+                        setShowModal(false);
+                        setEditingModule(null); // Reset after successful operation
+                    }}
+                    onCancel={() => {
+                        setShowModal(false);
+                        setEditingModule(null); // Reset on cancel
+                    }}
+                />
             </Modal>
+
+            {/* <Modal >
+
+            </Modal> */}
 
 
             {/* Pagination */}

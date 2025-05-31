@@ -2,80 +2,60 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import AddEditModuleValidation from '../../utils/validations/module/AddEditModuleValidation';
-import { useCreateModuleMutation, useUpdateModuleMutation } from '../../apis/management/SuperManagement';
+import { useCreateModuleMutation } from '../../apis/management/SuperManagement';
 import { ToastContainer } from 'react-toastify';
 import { ModuleMessage } from '../../messages/Messages';
 import { TOAST_MESSAGE_TYPE } from '../../utils/constants/Constants';
-
-const AddModule = ({ initialData, isEditing, onSuccess, onCancel }) => {
-  const [createModule] = useCreateModuleMutation();
-  const [updateModule] = useUpdateModuleMutation();
-const [formInitialData, setFormInitialData] = useState(
-  initialData ? {
-    ...initialData,
-    status: Number(initialData.status)  // Convert string to number
-  } : {
-    name: '',
-    slug: '',
-    description: '',
-    status: 1  // Default as number
-  }
-);
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    toast.dismiss();
-    let toastMessage = isEditing
-      ? ModuleMessage.MODULE_UPDATE_FAILED
-      : ModuleMessage.MODULE_CREATE_FAILED;
-    let toastType = TOAST_MESSAGE_TYPE.ERROR;
-
-    setSubmitting(true);
-
-    try {
-      let response;
-
-      if (isEditing && initialData?.id) {
-        // Update existing module
-        // Set status to string if it's not already
-        if (values.status !== undefined && typeof values.status !== 'string') {
-          values.status = String(values.status);
-        }
-        response = await updateModule({ id: initialData.id, ...values });
-      } else {
-        // Create new module
-        response = await createModule(values);
-        toastMessage = ModuleMessage.MODULE_CREATED_SUCCESS;
-      }
-
-      if (response.data?.success) {
-        toastType = TOAST_MESSAGE_TYPE.SUCCESS;
-        toastMessage = response.data.message || toastMessage;
-        onSuccess();
-        // queryClient.invalidateQueries('modules'); // Assuming you're using react-query
-      } else {
-        toastMessage = response.error?.data.message || toastMessage;
-      }
-    } catch (error) {
-      console.error('Operation failed:', error);
-      if (error.data?.message) {
-        toastMessage = error.data.message;
-      }
-    } finally {
-      setSubmitting(false);
-      toast[toastType](toastMessage);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: formInitialData,
-    validationSchema: AddEditModuleValidation,
-    onSubmit: handleSubmit
-  });
-
+const EditModule = () => {
+    // const [createModule] = useCreateModuleMutation();
+      
+      const handleSubmit = async (values, { setSubmitting }) => {
+        toast.dismiss();
+        let toastMessage = ModuleMessage.MODULE_CREATE_FAILED;
+        let toastType = TOAST_MESSAGE_TYPE.ERROR;
+        // console.log('Form values:', values);
+        setSubmitting(true);
+        console.log('Submitting values:', values);
+        // try {
+        //   const response = await createModule(values);
+        //   // console.log('Response:', response);
+        //   if (response.data?.success) {
+        //     toastType = TOAST_MESSAGE_TYPE.SUCCESS;
+        //     toastMessage = response.data.message;
+        //     // toast.success(response.data.message);
+        //     onSuccess();
+        //   } else {
+        //     // console.log('Error response:', response.error?.data.message);
+        //     toastMessage = response.error?.data.message || ModuleMessage.MODULE_CREATE_FAILED;
+        //     // onCancel()
+        //     // toast.error(response.data?.message || 'Failed to create module');
+        //   }
+        // } catch (error) {
+        //   if (error.data?.message) {
+        //     toastMessage = error.data.message;
+        //   }
+    
+        //   // toast.error('An error occurred while creating the module');
+        // } finally {
+        //   setSubmitting(false);
+        //   toast[toastType](toastMessage);
+        // }
+      };
+    
+      const formik = useFormik({
+        initialValues: {
+          name: 'Test name',
+          slug: 'test slug',
+          description: 'test description',
+          status: 1
+        },
+        validationSchema: AddEditModuleValidation,
+        onSubmit: handleSubmit
+      });
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="text-center pb-4 mb-6 border-b border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800">{isEditing ? 'Edit Module' : 'Create New Module'}</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">Edit Module</h2>
       </div>
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
@@ -185,7 +165,7 @@ const [formInitialData, setFormInitialData] = useState(
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddModule;
+export default EditModule

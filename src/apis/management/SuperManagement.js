@@ -53,6 +53,21 @@ export const SuperManagement = createApi({
       }),
       invalidatesTags: ['Module'],
     }),
+    getModuleById: builder.query({
+      query: (id) => ({
+        url: `/module/get-module-by-id/${id}`,
+        method: "GET",
+      }),
+      refetchOnMountOrArgChange: false,
+    }),
+    updateModule: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/module/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ['Module'],
+    }),
   }),
 });
 
@@ -62,5 +77,7 @@ export const {
     useGetModulesQuery,
     useLazyGetModulesQuery,
     useDeleteModuleMutation,
-    useToggleModuleStatusMutation
+    useToggleModuleStatusMutation,
+    useLazyGetModuleByIdQuery,
+    useUpdateModuleMutation,
 } = SuperManagement;

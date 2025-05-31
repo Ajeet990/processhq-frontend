@@ -20,9 +20,9 @@ const AddEditModuleValidation = Yup.object().shape({
     .required('Description is required')
     .max(100, 'Description must be less than 100 characters'),
 
-  status: Yup.number()
+  status: Yup.string()
     .required('Status is required')
-    .oneOf([0, 1], 'Status must be either 0 or 1')
+    .oneOf(['0', '1'], 'Status must be either 0 or 1')
 });
 
 export default AddEditModuleValidation;
