@@ -1,7 +1,7 @@
 import {
   useDeleteOrganizationMutation,
   useLazyGetOrganizationByIdQuery,
-  useLazyGetOrganizationQuery
+  useLazyGetOrganizationQuery,
 } from "../../../apis/management/OrganizationApiSlice";
 import { toast } from "react-toastify";
 import { OrgMessage } from "../../../messages/Messages";
@@ -11,6 +11,9 @@ import Modal from "../../../components/modal/Modal";
 import Pagination from "../../../components/pagination/Pagination";
 import FullPageLoader from "../../../components/loader/FullPageLoader";
 import { STATUS, PAGE } from "../../../utils/constants/Constants";
+import { useDeleteConfirmation } from "../../../components/deleteConfirmation/DeleteConfirmation";
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 const OrganizationTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,7 +21,7 @@ const OrganizationTable = () => {
   const [statusFilter, setStatusFilter] = useState(STATUS.ACTIVE);
   const [showModal, setShowModal] = useState(false);
   const [organization, setOrganization] = useState(null);
-  
+
   const [getOrganizations, { data: response, isLoading, isError, error }] = useLazyGetOrganizationQuery();
   const [deleteOrganization, { isLoading: isDeleting }] = useDeleteOrganizationMutation();
   const [getOrganizationById] = useLazyGetOrganizationByIdQuery();
@@ -44,19 +47,10 @@ const OrganizationTable = () => {
     fetchOrganizations(currentPage);
   }, []);
 
-  const handleDeleteOrganization = async (id) => {
-    if (window.confirm("Are you sure you want to delete this organization?")) {
-      try {
-        await deleteOrganization(id).unwrap();
-        toast.success(OrgMessage.ORG_DELETE_SUCCESS);
-        fetchOrganizations(currentPage); // Refresh current page after deletion
-      } catch (error) {
-        toast.error(
-          error.data?.message || error.message || OrgMessage.ORG_DELETE_FAILED
-        );
-      }
-    }
-  };
+  const handleDeleteOrganization = useDeleteConfirmation({
+    mutationHook: useDeleteOrganizationMutation,
+    entityName: "organization"
+  });
 
   const handleEditOrganization = async (id) => {
     try {
@@ -234,18 +228,19 @@ const OrganizationTable = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div className="flex space-x-3">
                         <button
-                          className="text-blue-600 hover:text-blue-800 hover:underline"
+                          className="text-blue-600 hover:text-blue-800 text-2xl hover:cursor-pointer"
                           onClick={() => handleEditOrganization(org.id)}
                         >
-                          Edit
+                          <FaEdit />
                         </button>
                         <span className="text-gray-300">|</span>
                         <button
-                          className="text-red-600 hover:text-red-800 hover:underline cursor-pointer"
+                          className="text-red-500 hover:text-red-800 text-2xl hover:cursor-pointer"
                           onClick={() => handleDeleteOrganization(org.id)}
                           disabled={isDeleting}
                         >
-                          {isDeleting ? "Deleting..." : "Delete"}
+                          {/* {isDeleting ? "Deleting..." : "Delete"} */}
+                          <MdDeleteForever />
                         </button>
                       </div>
                     </td>
