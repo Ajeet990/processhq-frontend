@@ -21,7 +21,7 @@ function App() {
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/organizations", element: <Organizations /> },
     { path: "/organizations/add-new", element: <OrganizationForm /> },
-	{ path:"/modules", element:<Modules />}
+    { path: "/modules", element: <Modules /> }
   ];
 
   return (

@@ -25,9 +25,10 @@ const Organizations = () => {
           <OrganizationTable />
         </div>
         {/* Pagination */}
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <Pagination />
-        </div>
+        </div> */}
+
       </div>
     </div>
   );

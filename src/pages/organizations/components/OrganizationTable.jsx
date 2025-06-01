@@ -8,6 +8,7 @@ import { OrgMessage } from "../../../messages/Messages";
 import { useState } from "react";
 import OrganizationForm from "./OrganizationForm";
 import Modal from "../../../components/modal/Modal";
+import Pagination from "../../../components/pagination/Pagination";
 
 const OrganizationTable = () => {
   const {
@@ -18,11 +19,14 @@ const OrganizationTable = () => {
     refetch
   } = useGetOrganizationQuery();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  
+
   const [deleteOrganization, { isLoading: isDeleting }] =
     useDeleteOrganizationMutation();
   const [getOrganizationById] = useGetOrganizationByIdMutation();
 
-  const organizations = response?.data || [];
+  const organizations = response?.data?.organizations || [];``
   const [showModal, setShowModal] = useState(false);
   const [organization, setOrganization] = useState(null);
 
@@ -51,7 +55,7 @@ const OrganizationTable = () => {
   const handleEditOrganization = async (id) => {
     try {
       const response = await getOrganizationById(id).unwrap();
-	  setOrganization(response.data);
+      setOrganization(response.data);
       setShowModal(true);
     } catch (error) {
       toast.error(error.data?.message || error.message);
@@ -153,11 +157,10 @@ const OrganizationTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                    ${
-                      org.status === "1" || org.status === 1
+                    ${org.status === "1" || org.status === 1
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
-                    }`}
+                      }`}
                   >
                     {org.status === "1" || org.status === 1
                       ? "Active"
@@ -169,7 +172,7 @@ const OrganizationTable = () => {
                     <button
                       className="text-blue-600 hover:text-blue-800 hover:underline"
                       onClick={() => handleEditOrganization(org.id)}
-                      //   disabled={isEditing}
+                    //   disabled={isEditing}
                     >
                       Edit
                     </button>
@@ -211,6 +214,18 @@ const OrganizationTable = () => {
           organization={organization}
         />
       </Modal>
+
+      <div className='mt-6'>
+        {response?.data?.pagination && (
+          <Pagination
+            pagination={response.data.pagination}
+            currentPage={currentPage} // Pass current active page
+            onPageChange={(page) => {
+              fetchModules(page); // Will call API with page=2, etc.
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useCreateOrganizationMutation } from "../../../apis/management/OrganizationApiSlice";
 import * as Yup from "yup";
 import { ToastContainer } from "react-toastify";
-import OrganizationValidation from "./../../../utils/validations/OrganizationValidation";
+import OrganizationValidation from "./../../../utils/validations/organisation/OrganizationValidation";
 import { OrgMessage } from "../../../messages/Messages";
 
 const OrganizationForm = ({ onSuccess, organization }) => {
@@ -33,16 +33,16 @@ const OrganizationForm = ({ onSuccess, organization }) => {
     initialValues: organization
       ? organization
       : {
-          name: "",
-          username: "",
-          email: "",
-          phone: "",
-          password: "",
-          address: "",
-          state: "",
-          url: "",
-          status: "1"
-        },
+        name: "",
+        username: "",
+        email: "",
+        phone: "",
+        password: "",
+        address: "",
+        state: "",
+        url: "",
+        status: "1"
+      },
     validationSchema: OrganizationValidation,
     onSubmit: handleOrganizationSubmit
   });
@@ -74,11 +74,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
-              className={`mt-1 block w-full px-3 py-2 border ${
-                formik.errors.name && formik.touched.name
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.name && formik.touched.name
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.name && formik.touched.name && (
               <p className="mt-1 text-sm text-red-600">{formik.errors.name}</p>
@@ -100,11 +99,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.username}
-              className={`mt-1 block w-full px-3 py-2 border ${
-                formik.errors.username && formik.touched.username
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.username && formik.touched.username
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.username && formik.touched.username && (
               <p className="mt-1 text-sm text-red-600">
@@ -128,11 +126,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.email}
-              className={`mt-1 block w-full px-3 py-2 border ${
-                formik.errors.email && formik.touched.email
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.email && formik.touched.email
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.email && formik.touched.email && (
               <p className="mt-1 text-sm text-red-600">{formik.errors.email}</p>
@@ -155,11 +152,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
-              className={`mt-1 block w-full px-3 py-2 border ${
-                formik.errors.password && formik.touched.password
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.password && formik.touched.password
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.password && formik.touched.password && (
               <p className="mt-1 text-sm text-red-600">
@@ -170,10 +166,7 @@ const OrganizationForm = ({ onSuccess, organization }) => {
 
           {/* Phone Field */}
           <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
               Phone
             </label>
             <input
@@ -183,16 +176,19 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.phone}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.phone && formik.touched.phone
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
+            {formik.errors.phone && formik.touched.phone && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.phone}</p>
+            )}
           </div>
 
           {/* Address Field */}
           <div>
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
               Address
             </label>
             <input
@@ -202,31 +198,18 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.address}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.address && formik.touched.address
+                ? "border-red-500"
+                : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
-          </div>
-
-          {/* State Field */}
-          <div>
-            <label
-              htmlFor="state"
-              className="block text-sm font-medium text-gray-700"
-            >
-              State
-            </label>
-            <input
-              id="state"
-              name="state"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.state}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            {formik.errors.address && formik.touched.address && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.address}</p>
+            )}
           </div>
 
           {/* URL Field */}
-          <div>
+          <div className="col-span-2">
             <label
               htmlFor="url"
               className="block text-sm font-medium text-gray-700"
@@ -240,11 +223,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.url}
-              className={`mt-1 block w-full px-3 py-2 border ${
-                formik.errors.url && formik.touched.url
+              className={`mt-1 block w-full px-3 py-2 border ${formik.errors.url && formik.touched.url
                   ? "border-red-500"
                   : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.url && formik.touched.url && (
               <p className="mt-1 text-sm text-red-600">{formik.errors.url}</p>
@@ -277,11 +259,10 @@ const OrganizationForm = ({ onSuccess, organization }) => {
           <button
             type="submit"
             disabled={formik.isSubmitting || isLoading}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-              formik.isSubmitting || isLoading
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${formik.isSubmitting || isLoading
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
           >
             {formik.isSubmitting || isLoading ? (
               <>
