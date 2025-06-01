@@ -26,18 +26,49 @@ export const OrganizationApiSlice = createApi({
       }),
       invalidatesTags: ["Organization"]
     }),
+    
     getOrganization: builder.query({
-      query: () => "/organization/get",
+      query: ({ page = 1, search = '', status = '' }) => ({
+        url: "/organization/get",
+        method: "GET",
+        params: {
+          page,
+          search,
+          status
+        }
+      }),
       providesTags: ["Organization"]
     }),
-	 getOrganizationById: builder.mutation({
-      query: (id) => `/organization/get/${id}`,
+    
+    getOrganizationById: builder.query({
+      query: (id) => ({
+        url: `/organization/get/${id}`,
+        method: "GET"
+      }),
       providesTags: ["Organization"]
     }),
+    
     deleteOrganization: builder.mutation({
       query: (id) => ({
         url: `/organization/delete/${id}`,
         method: "DELETE",
+      }),
+      invalidatesTags: ["Organization"]
+    }),
+    
+    updateOrganization: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/organization/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Organization"]
+    }),
+    
+    toggleOrganizationStatus: builder.mutation({
+      query: (id) => ({
+        url: `/organization/toggle-status/${id}`,
+        method: "PUT",
       }),
       invalidatesTags: ["Organization"]
     })
@@ -47,6 +78,10 @@ export const OrganizationApiSlice = createApi({
 export const {
   useCreateOrganizationMutation,
   useGetOrganizationQuery,
-  useGetOrganizationByIdMutation,
-  useDeleteOrganizationMutation
+  useLazyGetOrganizationQuery,
+  useGetOrganizationByIdQuery,
+  useLazyGetOrganizationByIdQuery,
+  useDeleteOrganizationMutation,
+  useUpdateOrganizationMutation,
+  useToggleOrganizationStatusMutation
 } = OrganizationApiSlice;

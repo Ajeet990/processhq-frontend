@@ -16,10 +16,15 @@ const OrganizationForm = ({ onSuccess, organization }) => {
     toast.dismiss();
 
     try {
-      const response = await createOrganization(values).unwrap();
-      toast.success(response.data.message);
-      resetForm();
-      onSuccess();
+      if (organization) {
+        // console.log("Updating organization:", values);
+      } else {
+        const response = await createOrganization(values).unwrap();
+        toast.success(response.data.message);
+        resetForm();
+        onSuccess();
+      }
+
     } catch (error) {
       toast.error(
         error.data?.message || error.message || OrgMessage.ORG_CREATE_FAILED
@@ -224,8 +229,8 @@ const OrganizationForm = ({ onSuccess, organization }) => {
               onBlur={formik.handleBlur}
               value={formik.values.url}
               className={`mt-1 block w-full px-3 py-2 border ${formik.errors.url && formik.touched.url
-                  ? "border-red-500"
-                  : "border-gray-300"
+                ? "border-red-500"
+                : "border-gray-300"
                 } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
             />
             {formik.errors.url && formik.touched.url && (
