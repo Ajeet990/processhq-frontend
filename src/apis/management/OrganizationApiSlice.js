@@ -26,14 +26,6 @@ export const OrganizationApiSlice = createApi({
       }),
       invalidatesTags: ["Organization"]
     }),
-    // updateOrganization: builder.mutation({
-    //   query: ({ id, ...data }) => ({
-    //     url: `/organization/update/${id}`,
-    //     method: "PUT",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["Organization"]
-    // }),
     
     getOrganization: builder.query({
       query: ({ page = 1, search = '', status = '' }) => ({
@@ -53,7 +45,7 @@ export const OrganizationApiSlice = createApi({
         url: `/organization/get/${id}`,
         method: "GET"
       }),
-      providesTags: ["Organization"]
+      // providesTags: ["Organization"]
     }),
     
     deleteOrganization: builder.mutation({

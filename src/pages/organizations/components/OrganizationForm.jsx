@@ -24,7 +24,8 @@
            id: organization.id,
            ...values
          }).unwrap();
-         toast.success(response.data.message);
+         toast.success(response.message);
+        //  toast.success("yes updated");
          resetForm();
          onSuccess();
        } else {
@@ -67,7 +68,7 @@
  
        <div className="text-center pb-4 mb-6 border-b border-gray-200">
          <h2 className="text-2xl font-semibold text-gray-800">
-           Create New Organization
+           {organization ? "Update Organization" : "Create Organization"}
          </h2>
        </div>
  
@@ -300,10 +301,10 @@
                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                    ></path>
                  </svg>
-                 Creating...
+                 Processing...
                </>
              ) : (
-               "Create Organization"
+               <>{organization ? "Update Organization" : "Create Organization"}</>
              )}
            </button>
          </div>

@@ -68,6 +68,13 @@ export const SuperManagement = createApi({
       }),
       invalidatesTags: ['Module'],
     }),
+    dashboardData: builder.query({
+      query: () => ({
+        url: "/dashboard/data",
+        method: "GET",
+      }),
+      // providesTags: ['Module'],
+    }),
   }),
 });
 
@@ -80,4 +87,5 @@ export const {
     useToggleModuleStatusMutation,
     useLazyGetModuleByIdQuery,
     useUpdateModuleMutation,
+    useDashboardDataQuery,
 } = SuperManagement;
